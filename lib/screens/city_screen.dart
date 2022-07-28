@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:weather_app/utilities/constants.dart';
 
 class CityScreen extends StatefulWidget {
   const CityScreen({Key? key}) : super(key: key);
@@ -38,7 +39,7 @@ class _CityScreenState extends State<CityScreen> {
               ),
               RawMaterialButton(
                 onPressed: () {},
-                child: Text(
+                child: const Text(
                   'Get Weather',
                   style: kButtonTextStyle,
                 ),
