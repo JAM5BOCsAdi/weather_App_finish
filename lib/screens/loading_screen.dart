@@ -10,13 +10,15 @@ class LoadingScreen extends StatefulWidget {
 class _LoadingScreenState extends State<LoadingScreen> {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Center(
-        child: RawMaterialButton(
-          onPressed: () {
-            //Get the current location
-          },
-          child: const Text('Get Location'),
+    return SafeArea(
+      child: Scaffold(
+        body: Center(
+          child: RawMaterialButton(
+            onPressed: () {
+              //Get the current location
+            },
+            child: const Text('Get Location'),
+          ),
         ),
       ),
     );
