@@ -31,6 +31,7 @@ class _LocationScreenState extends State<LocationScreen> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: <Widget>[
                     RawMaterialButton(
+                      fillColor: Colors.blue,
                       onPressed: () {},
                       child: const Icon(
                         Icons.near_me,
@@ -38,6 +39,7 @@ class _LocationScreenState extends State<LocationScreen> {
                       ),
                     ),
                     RawMaterialButton(
+                      fillColor: Colors.red,
                       onPressed: () {},
                       child: const Icon(
                         Icons.location_city,

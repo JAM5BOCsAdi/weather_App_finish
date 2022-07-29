@@ -27,6 +27,7 @@ class _CityScreenState extends State<CityScreen> {
                 Align(
                   alignment: Alignment.topLeft,
                   child: RawMaterialButton(
+                    fillColor: Colors.blue,
                     onPressed: () {},
                     child: const Icon(
                       Icons.arrow_back_ios,
@@ -39,6 +40,7 @@ class _CityScreenState extends State<CityScreen> {
                   child: null,
                 ),
                 RawMaterialButton(
+                  fillColor: Colors.red,
                   onPressed: () {},
                   child: const Text(
                     'Get Weather',

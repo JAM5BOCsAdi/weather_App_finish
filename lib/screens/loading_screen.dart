@@ -14,6 +14,9 @@ class _LoadingScreenState extends State<LoadingScreen> {
       child: Scaffold(
         body: Center(
           child: RawMaterialButton(
+            // Size of the Button:
+            //constraints: BoxConstraints.tightFor(height: 100.0, width: 100.0),
+            fillColor: Colors.blue,
             onPressed: () {
               //Get the current location
             },
