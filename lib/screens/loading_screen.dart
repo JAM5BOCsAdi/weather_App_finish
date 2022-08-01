@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:weather_app/services/location.dart';
@@ -36,6 +38,8 @@ class _LoadingScreenState extends State<LoadingScreen> {
     if (response.statusCode == 200) {
       String data = response.body;
       print(data);
+      var longitude = jsonDecode(data)["coord"]["lon"];
+      print(longitude);
     } else {
       print(response.statusCode);
     }
