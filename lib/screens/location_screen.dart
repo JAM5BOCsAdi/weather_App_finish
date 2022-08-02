@@ -31,7 +31,7 @@ class _LocationScreenState extends State<LocationScreen> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: <Widget>[
                     RawMaterialButton(
-                      fillColor: Colors.blue,
+                      //fillColor: Colors.blue,
                       onPressed: () {},
                       child: const Icon(
                         Icons.near_me,
@@ -39,7 +39,7 @@ class _LocationScreenState extends State<LocationScreen> {
                       ),
                     ),
                     RawMaterialButton(
-                      fillColor: Colors.red,
+                      //fillColor: Colors.red,
                       onPressed: () {},
                       child: const Icon(
                         Icons.location_city,
@@ -79,3 +79,11 @@ class _LocationScreenState extends State<LocationScreen> {
     );
   }
 }
+/*
+double temperature = decodedJSONData["main"]["temp"];
+print(temperature);
+int weatherID = decodedJSONData["weather"][0]["id"]; // Because inside "weather" there is a List of 1 item, that contains properties
+print(weatherID);
+String name = decodedJSONData["name"]; // City Name
+print(name);
+*/

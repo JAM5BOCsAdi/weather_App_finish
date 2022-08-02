@@ -1,8 +1,8 @@
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
+import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:weather_app/screens/location_screen.dart';
 import 'package:weather_app/services/location.dart';
+import 'package:weather_app/services/networking.dart';
 
 class LoadingScreen extends StatefulWidget {
   const LoadingScreen({Key? key}) : super(key: key);
@@ -12,44 +12,48 @@ class LoadingScreen extends StatefulWidget {
 }
 
 class _LoadingScreenState extends State<LoadingScreen> {
+  static const appidKey = "9e1f0e2cfca262ce8ad574425d8f993b";
+
+  // Decimal latitude and longitude coordinates for Szombathely (Hungary):
+  late double lat; // 47.23088
+  late double lon; // 16.62155
+
   @override
   void initState() {
     super.initState();
-    getLocation();
+    getLocationData();
   }
 
   // Get the current location by accuracy
-  void getLocation() async {
+  void getLocationData() async {
     Location location = Location();
+
     await location.getCurrentLocation();
-    print(location.latitude);
-    print(location.longitude);
+
+    lat = location.latitude;
+    lon = location.longitude;
+
+    NetworkHelper networkHelper = NetworkHelper(url: 'https://api.openweathermap.org/data/2.5/weather?lat=$lat&lon=$lon&appid=$appidKey');
+
+    void weatherData = await networkHelper.getData();
+    navigator();
   }
 
-  void getData() async {
-    // Decimal latitude and longitude coordinates for Szombathely (Hungary):
-    double lat = 47.23088;
-    double lon = 16.62155;
-    String appidCurrent = "9e1f0e2cfca262ce8ad574425d8f993b";
-    String url = 'https://api.openweathermap.org/data/2.5/weather?lat=$lat&lon=$lon&appid=$appidCurrent';
-
-    http.Response response = await http.get(Uri.parse(url));
-
-    if (response.statusCode == 200) {
-      String data = response.body;
-      print(data);
-      var longitude = jsonDecode(data)["coord"]["lon"];
-      print(longitude);
-    } else {
-      print(response.statusCode);
-    }
+  void navigator() {
+    Navigator.of(context).push(MaterialPageRoute(builder: (context) => const LocationScreen()));
   }
 
   @override
   Widget build(BuildContext context) {
-    getData();
     return const SafeArea(
-      child: Scaffold(),
+      child: Scaffold(
+        body: Center(
+          child: SpinKitFadingCircle(
+            color: Colors.white,
+            duration: Duration(seconds: 3),
+          ),
+        ),
+      ),
     );
 /*
     TRY - CATCH
