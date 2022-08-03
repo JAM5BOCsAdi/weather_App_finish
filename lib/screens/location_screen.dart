@@ -2,13 +2,34 @@ import 'package:flutter/material.dart';
 import 'package:weather_app/utilities/constants.dart';
 
 class LocationScreen extends StatefulWidget {
-  const LocationScreen({Key? key}) : super(key: key);
+  const LocationScreen({Key? key, this.locationWeather}) : super(key: key);
+
+  final dynamic locationWeather;
 
   @override
   State<LocationScreen> createState() => _LocationScreenState();
 }
 
 class _LocationScreenState extends State<LocationScreen> {
+  late int temperature;
+  late int weatherID;
+  late String name;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    updateUI(widget.locationWeather);
+  }
+
+  void updateUI(dynamic weatherData) {
+    double temp = weatherData["main"]["temp"];
+    temperature = temp.toInt();
+    weatherID = weatherData["weather"][0]["id"]; // Because inside "weather" there is a List of 1 item, that contains properties
+    name = weatherData["name"]; // City Name
+    print(temperature);
+  }
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -51,12 +72,12 @@ class _LocationScreenState extends State<LocationScreen> {
                 Padding(
                   padding: const EdgeInsets.only(left: 15.0),
                   child: Row(
-                    children: const <Widget>[
+                    children: <Widget>[
                       Text(
-                        '32°',
+                        '$temperature°',
                         style: kTempTextStyle,
                       ),
-                      Text(
+                      const Text(
                         '☀️',
                         style: kConditionTextStyle,
                       ),

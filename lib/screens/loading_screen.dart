@@ -15,8 +15,10 @@ class _LoadingScreenState extends State<LoadingScreen> {
   static const appidKey = "9e1f0e2cfca262ce8ad574425d8f993b";
 
   // Decimal latitude and longitude coordinates for Szombathely (Hungary):
-  late double lat; // 47.23088
-  late double lon; // 16.62155
+  /*
+    late double lat; // 47.23088
+    late double lon; // 16.62155
+  */
 
   @override
   void initState() {
@@ -30,17 +32,30 @@ class _LoadingScreenState extends State<LoadingScreen> {
 
     await location.getCurrentLocation();
 
-    lat = location.latitude;
-    lon = location.longitude;
+    NetworkHelper networkHelper = NetworkHelper(url: 'https://api.openweathermap.org/data/2.5/weather?lat=${location.latitude}&lon=${location.longitude}&appid=$appidKey&units=metric');
 
-    NetworkHelper networkHelper = NetworkHelper(url: 'https://api.openweathermap.org/data/2.5/weather?lat=$lat&lon=$lon&appid=$appidKey');
-
-    void weatherData = await networkHelper.getData();
-    navigator();
+    dynamic weatherData = await networkHelper.getData();
+/*
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) {
+          return LocationScreen(locationWeather: weatherData);
+        },
+      ),
+    );
+*/
+    navigator(weatherData);
   }
 
-  void navigator() {
-    Navigator.of(context).push(MaterialPageRoute(builder: (context) => const LocationScreen()));
+  void navigator(dynamic weatherData) {
+    Navigator.of(context).push(
+      MaterialPageRoute(
+        builder: (context) {
+          return LocationScreen(locationWeather: weatherData);
+        },
+      ),
+    );
   }
 
   @override
