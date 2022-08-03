@@ -20,55 +20,56 @@ class _LoadingScreenState extends State<LoadingScreen> {
     late double lon; // 16.62155
   */
 
+  late dynamic getLocation;
+
   @override
   void initState() {
     super.initState();
-    getLocationData();
+    getLocation = getWeatherData;
   }
 
   // Get the current location by accuracy
-  void getLocationData() async {
-    Location location = Location();
+  Future<dynamic> getWeatherData() async {
+    final Location location = Location();
 
     await location.getCurrentLocation();
 
-    NetworkHelper networkHelper = NetworkHelper(url: 'https://api.openweathermap.org/data/2.5/weather?lat=${location.latitude}&lon=${location.longitude}&appid=$appidKey&units=metric');
+    if (location.latitude != null && location.longitude != null) {
+      NetworkHelper networkHelper = NetworkHelper(url: 'https://api.openweathermap.org/data/2.5/weather?lat=${location.latitude}&lon=${location.longitude}&appid=$appidKey&units=metric');
 
-    dynamic weatherData = await networkHelper.getData();
-/*
-    Navigator.push(
-      context,
-      MaterialPageRoute(
-        builder: (context) {
-          return LocationScreen(locationWeather: weatherData);
-        },
-      ),
-    );
-*/
-    navigator(weatherData);
-  }
-
-  void navigator(dynamic weatherData) {
-    Navigator.of(context).push(
-      MaterialPageRoute(
-        builder: (context) {
-          return LocationScreen(locationWeather: weatherData);
-        },
-      ),
-    );
+      return await networkHelper.getData();
+    } else {
+      throw Exception("No location!");
+    }
   }
 
   @override
   Widget build(BuildContext context) {
-    return const SafeArea(
+    return SafeArea(
       child: Scaffold(
-        body: Center(
-          child: SpinKitFadingCircle(
-            color: Colors.white,
-            duration: Duration(seconds: 3),
-          ),
-        ),
-      ),
+          body: FutureBuilder(
+        future: getLocation(),
+        builder: (context, snapshot) {
+          if (snapshot.hasData) return LocationScreen(locationWeather: snapshot.data);
+          if (snapshot.hasError) {
+            return Center(
+              child: Text(snapshot.error.toString()),
+            );
+          } else {
+            return Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: const [
+                SpinKitFadingCircle(
+                  color: Colors.white,
+                  duration: Duration(seconds: 3),
+                ),
+                SizedBox(height: 8.0),
+                Text("Időjárás adatok betöltése...")
+              ],
+            );
+          }
+        },
+      )),
     );
 /*
     TRY - CATCH

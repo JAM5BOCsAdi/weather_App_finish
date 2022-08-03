@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:weather_app/services/weather.dart';
 import 'package:weather_app/utilities/constants.dart';
 
 class LocationScreen extends StatefulWidget {
@@ -11,23 +12,28 @@ class LocationScreen extends StatefulWidget {
 }
 
 class _LocationScreenState extends State<LocationScreen> {
+  final WeatherModel weather = WeatherModel();
   late int temperature;
-  late int weatherID;
-  late String name;
+  late String weatherIcon;
+  late String cityName;
+  late String weatherMessage;
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     updateUI(widget.locationWeather);
   }
 
   void updateUI(dynamic weatherData) {
-    double temp = weatherData["main"]["temp"];
-    temperature = temp.toInt();
-    weatherID = weatherData["weather"][0]["id"]; // Because inside "weather" there is a List of 1 item, that contains properties
-    name = weatherData["name"]; // City Name
-    print(temperature);
+    setState(() {
+      double temp = weatherData['main']['temp'];
+      temperature = temp.toInt();
+      dynamic condition = weatherData['weather'][0]['id'];
+      weatherIcon = weather.getWeatherIcon(condition);
+      weatherMessage = weather.getMessage(temperature);
+      cityName = weatherData['name'];
+      print(temperature);
+    });
   }
 
   @override
@@ -77,17 +83,17 @@ class _LocationScreenState extends State<LocationScreen> {
                         '$temperature°',
                         style: kTempTextStyle,
                       ),
-                      const Text(
-                        '☀️',
+                      Text(
+                        weatherIcon,
                         style: kConditionTextStyle,
                       ),
                     ],
                   ),
                 ),
-                const Padding(
-                  padding: EdgeInsets.only(right: 15.0),
+                Padding(
+                  padding: const EdgeInsets.only(right: 15.0),
                   child: Text(
-                    "It's 🍦 time in San Francisco!",
+                    "$weatherMessage in $cityName!",
                     textAlign: TextAlign.right,
                     style: kMessageTextStyle,
                   ),
